@@ -7,12 +7,7 @@ const VideoFeed = () => {
   if (videoRef.current && stream) {
     videoRef.current.srcObject = stream;
   }
-  return (
-    <div>
-      Hello
-      <video ref={videoRef} autoPlay />
-    </div>
-  );
+  return <video ref={videoRef} className="w-[720px]" autoPlay />;
 };
 
 export default VideoFeed;
