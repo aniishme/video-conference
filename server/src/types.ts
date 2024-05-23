@@ -1,3 +1,5 @@
+import { JwtPayload } from "jsonwebtoken";
+
 export type GetUserType = {
   id: number;
   name: string;
@@ -29,3 +31,9 @@ export type CreateEventType = Omit<
 >;
 
 export type UpdateEventType = Partial<CreateEventType>;
+
+export type BasePayloadType = {
+  id: string;
+};
+
+export type JwtPayloadType = BasePayloadType & JwtPayload;
