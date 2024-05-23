@@ -1,0 +1,13 @@
+{
+  "version": "6",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1716459540767,
+      "tag": "0000_gorgeous_nightmare",
+      "breakpoints": true
+    }
+  ]
+}
