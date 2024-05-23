@@ -12,7 +12,11 @@ import { comparePassword, hashPassword } from "../utils/password";
 import { generateToken, verifyToken } from "../utils/jwt";
 
 export class UserController {
-  private userService = new UserService();
+  private userService: UserService;
+
+  constructor() {
+    this.userService = new UserService();
+  }
 
   async register(req: Request, res: Response, next: NextFunction) {
     const user = req.body;
@@ -41,6 +45,16 @@ export class UserController {
         return res.status(400).json({ message: "Invalid credentials" });
       }
       const token = generateToken({ id: user[0].id });
+
+      const ONE_WEEK_IN_MS = 604800000;
+
+      res.cookie("ACCESS_TOKEN", token, {
+        httpOnly: true,
+        path: "/",
+        maxAge: ONE_WEEK_IN_MS,
+        sameSite: "none",
+        // secure: true,
+      });
       return res.status(200).json({ accessToken: token });
     } catch (error) {
       next(error);
@@ -48,11 +62,20 @@ export class UserController {
   }
 
   async getProfile(req: Request, res: Response, next: NextFunction) {
-    const token = req.headers.authorization?.split(" ")[1];
+    const token = req.cookies.ACCESS_TOKEN;
+    console.log("TOKENHERE", token);
     try {
       const payload = verifyToken(token!);
       const user = await this.userService.getById(payload?.id);
-      return res.status(200).json(user);
+      if (user.length === 0) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      const response = {
+        id: user[0].id,
+        name: user[0].name,
+        email: user[0].email,
+      };
+      return res.status(200).json(response);
     } catch (error) {
       next(error);
     }

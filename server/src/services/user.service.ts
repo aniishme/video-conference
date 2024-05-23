@@ -5,6 +5,8 @@ import { usersTable } from "../db/schema";
 import { CreateUserType, UpdateUserType } from "../types";
 
 export class UserService {
+  constructor() {}
+
   async create(user: CreateUserType) {
     return db.insert(usersTable).values(user);
   }
