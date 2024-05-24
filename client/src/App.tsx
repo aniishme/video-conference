@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Conference from "./pages/conference";
 import Layout from "./components/layout/layout";
 import Login from "./pages/login";
+import Register from "./pages/register";
 
 // https://coolors.co/2274a5-e7dfc6-e9f1f7-131b23
 const router = createBrowserRouter([
@@ -13,6 +14,10 @@ const router = createBrowserRouter([
       {
         path: "login",
         element: <Login />,
+      },
+      {
+        path: "register",
+        element: <Register />,
       },
     ],
   },

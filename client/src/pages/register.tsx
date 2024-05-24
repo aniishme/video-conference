@@ -13,8 +13,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-function Login() {
+function Register() {
   const [loginData, setLoginData] = useState({
+    name: "",
     email: "",
     password: "",
   });
@@ -27,7 +28,7 @@ function Login() {
     }));
   };
 
-  const handleLoginClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleRegisterClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     console.log(loginData);
   };
@@ -36,12 +37,22 @@ function Login() {
     <div className="h-screen w-screen flex justify-center items-center bg-[#131B23]">
       <Card className="w-[350px]">
         <CardHeader>
-          <CardTitle>Login to Meet</CardTitle>
-          <CardDescription>Join events in one-click.</CardDescription>
+          <CardTitle>Register to Meet</CardTitle>
+          <CardDescription>Create account and enjoy meets./</CardDescription>
         </CardHeader>
         <CardContent>
           <form>
             <div className="grid w-full items-center gap-4">
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="name">Name:</Label>
+                <Input
+                  id="name"
+                  name="name"
+                  placeholder="John Doe"
+                  value={loginData.name}
+                  onChange={handleFormChange}
+                />
+              </div>
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="name">Email:</Label>
                 <Input
@@ -66,11 +77,11 @@ function Login() {
           </form>
         </CardContent>
         <CardFooter className="flex justify-between">
-          <Button className="bg-[#2274A5]" onClick={handleLoginClick}>
-            Login
+          <Button className="bg-[#2274A5]" onClick={handleRegisterClick}>
+            Register
           </Button>
-          <Link to="/register">
-            <Button variant="outline">Register</Button>
+          <Link to="/login">
+            <Button variant="outline">Login</Button>
           </Link>
         </CardFooter>
       </Card>
@@ -78,4 +89,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Register;
