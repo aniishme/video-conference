@@ -1,9 +1,15 @@
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Conference from "./pages/conference";
+import Layout from "./components/layout/layout";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Layout />,
+    children: [{ path: "conference", element: <Conference /> }],
+  },
+]);
 
 export default function App() {
-  return (
-    <div className="flex flex-col justify-start items-center bg-slate-100">
-      <Conference />
-    </div>
-  );
+  return <RouterProvider router={router} />;
 }

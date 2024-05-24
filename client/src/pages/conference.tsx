@@ -1,5 +1,4 @@
 import ChatFeed from "@/components/chat-feed/chat-feed";
-import Header from "@/components/layout/header";
 import { Card, CardFooter } from "@/components/ui/card";
 import VideoFeed from "@/components/video-feed/video-feed";
 
@@ -7,7 +6,6 @@ const Conference = () => {
   const participants = [1, 2, 3, 4, 5, 6];
   return (
     <>
-      <Header />
       <div className="grid grid-cols-6 gap-10 justify-between w-4/5">
         <div className="col-span-4 bg-gray-800 rounded-sm w-full flex justify-center items-center">
           <VideoFeed />
