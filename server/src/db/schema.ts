@@ -1,5 +1,5 @@
 import { randomUUID } from "crypto";
-import { sql } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const usersTable = sqliteTable("users", {
@@ -17,6 +17,10 @@ export const usersTable = sqliteTable("users", {
   ),
 });
 
+export const usersRelations = relations(usersTable, ({ many }) => ({
+  events: many(eventsTable),
+}));
+
 export const eventsTable = sqliteTable("events", {
   id: text("id", { length: 36 })
     .primaryKey()
@@ -24,6 +28,7 @@ export const eventsTable = sqliteTable("events", {
   title: text("title").notNull(),
   description: text("description").notNull(),
   date: text("date").notNull(),
+  userId: text("user_id", { length: 36 }).notNull(),
   created_at: text("created_at")
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
@@ -31,3 +36,10 @@ export const eventsTable = sqliteTable("events", {
     () => new Date()
   ),
 });
+
+export const eventsRelations = relations(eventsTable, ({ one }) => ({
+  user: one(usersTable, {
+    fields: [eventsTable.userId],
+    references: [usersTable.id],
+  }),
+}));

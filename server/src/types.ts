@@ -21,6 +21,7 @@ export type GetEventType = {
   title: string;
   description: string;
   date: string;
+  userId: string;
   created_at: string;
   updated_at: string;
 };

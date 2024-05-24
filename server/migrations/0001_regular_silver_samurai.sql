@@ -1,0 +1,1 @@
+ALTER TABLE `events` ADD `user_id` text(36) NOT NULL;
