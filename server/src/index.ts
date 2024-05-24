@@ -7,6 +7,7 @@ import userRouter from "./routes/user.route";
 
 //Middlewares
 import errorHandler from "./middleware/error.middleware";
+import eventRouter from "./routes/event.route";
 
 const app = express();
 const port = 3000;
@@ -20,6 +21,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/user", userRouter);
+app.use("/event", eventRouter);
 
 // Register the error handler middleware
 app.use(errorHandler);
