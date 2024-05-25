@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import CreateEventDialog from "../dialog/create-event";
 
 const Sidebar = () => {
   return (
@@ -6,9 +7,11 @@ const Sidebar = () => {
       <div className="p-4 text-white">
         <ul>
           <li className="p-2 hover:bg-gray-700 cursor-pointer">
-            <Button variant="outline" className="bg-black w-full">
-              Create Event
-            </Button>
+            <CreateEventDialog>
+              <Button variant="outline" className="bg-black w-full">
+                Create Event
+              </Button>
+            </CreateEventDialog>
           </li>
 
           <li className="p-2 hover:bg-gray-700 cursor-pointer">
