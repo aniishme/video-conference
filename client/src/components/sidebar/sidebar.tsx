@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import CreateEventDialog from "../dialog/create-event";
+import JoinEventDialog from "../dialog/join-event";
 
 const Sidebar = () => {
   return (
@@ -15,9 +16,11 @@ const Sidebar = () => {
           </li>
 
           <li className="p-2 hover:bg-gray-700 cursor-pointer">
-            <Button variant="outline" className="bg-black w-full">
-              Join Event
-            </Button>
+            <JoinEventDialog>
+              <Button variant="outline" className="bg-black w-full">
+                Join Event
+              </Button>
+            </JoinEventDialog>
           </li>
 
           <li className="p-2 hover:bg-gray-700 cursor-pointer">
