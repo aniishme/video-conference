@@ -6,6 +6,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { DialogProps } from "@radix-ui/react-dialog";
 
 type DialogBoxProps = {
   children: React.ReactNode;
@@ -14,14 +15,15 @@ type DialogBoxProps = {
   button: React.ReactNode;
 };
 
-const DialogBox: React.FC<DialogBoxProps> = ({
+const DialogBox: React.FC<DialogBoxProps & DialogProps> = ({
   children,
   title,
   description,
   button,
+  ...props
 }) => {
   return (
-    <Dialog>
+    <Dialog {...props}>
       <DialogTrigger asChild>{button}</DialogTrigger>
 
       <DialogContent className="sm:max-w-[425px]">
