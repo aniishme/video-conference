@@ -1,14 +1,22 @@
 import Calendar from "@/components/calendar/calendar";
 import Sidebar from "@/components/sidebar/sidebar";
-
-const events: Record<string, string> = {
-  "2024-05-20": "Meeting",
-  "2024-06-15": "Conference",
-  "2024-07-25": "Birthday",
-  // Add more events here
-};
+import { GetEventType } from "@/types";
+import { getEvents } from "@/utils/event";
+import { useEffect, useState } from "react";
 
 const Dashboard = () => {
+  const [events, setEvents] = useState<GetEventType[]>([]);
+
+  const fetchEvents = async () => {
+    const data = await getEvents("tobereplaced");
+    setEvents(data);
+  };
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+  console.log(events);
+
   return (
     <div className="w-4/5 px-2 py-4 min-h-screen h-content flex flex-row  gap-32 items-start justify-between">
       <Sidebar />
