@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "../ui/button";
 import { GetEventType } from "@/types";
+import EventPopover from "../popover/event-popover";
 
 interface CalendarProps {
   events: GetEventType[];
@@ -61,13 +62,15 @@ const Calendar: React.FC<CalendarProps> = ({ events }) => {
           : "";
 
       calendarDays.push(
-        <Button
-          variant="default"
-          key={day}
-          className={`w-1/7 h-24 font-bold flex items-center justify-center  cursor-pointer ${eventClass} ${todayClass} hover:text-white hover:bg-blue-600`}
-        >
-          {day}
-        </Button>
+        <EventPopover key={day} events={eventByDay}>
+          <Button
+            variant="default"
+            key={day}
+            className={`w-1/7 h-24 font-bold flex items-center justify-center  cursor-pointer ${eventClass} ${todayClass} hover:text-white hover:bg-blue-600`}
+          >
+            {day}
+          </Button>
+        </EventPopover>
       );
     }
 
