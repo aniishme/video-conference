@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Button } from "../ui/button";
+import { GetEventType } from "@/types";
 
 interface CalendarProps {
-  events: Record<string, string>;
+  events: GetEventType[];
 }
 
 const Calendar: React.FC<CalendarProps> = ({ events }) => {
@@ -40,26 +41,33 @@ const Calendar: React.FC<CalendarProps> = ({ events }) => {
 
     for (let day = 1; day <= daysInMonth; day++) {
       const currentDate = new Date(currentYear, currentMonth, day);
-      const isoDate = currentDate.toISOString().split("T")[0];
+      const dateString = currentDate.toDateString();
       const isPastEvent = currentDate < today;
-      const eventClass = events[isoDate]
+
+      const eventByDay = events.filter(
+        (event) => new Date(event.date).toDateString() === dateString
+      );
+
+      const eventExists = eventByDay.length > 0;
+
+      const eventClass = eventExists
         ? isPastEvent
           ? "bg-[#FF6B6B]"
           : "bg-[#4ECDC4]"
         : "bg-[#131B23]";
-
       const todayClass =
         currentDate.toDateString() === today.toDateString()
           ? "bg-[#F7F7FF] text-black"
           : "";
 
       calendarDays.push(
-        <div
+        <Button
+          variant="default"
           key={day}
-          className={`w-1/7 h-24 font-bold flex items-center justify-center  cursor-pointer ${eventClass} ${todayClass}`}
+          className={`w-1/7 h-24 font-bold flex items-center justify-center  cursor-pointer ${eventClass} ${todayClass} hover:text-white hover:bg-blue-600`}
         >
           {day}
-        </div>
+        </Button>
       );
     }
 
