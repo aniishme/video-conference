@@ -1,28 +1,54 @@
+import { useState } from "react";
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import DialogBox from "./dialog-box";
 import { DialogFooter } from "../ui/dialog";
 import { Button } from "../ui/button";
+import { createEvent } from "@/utils/event";
+
+import DialogBox from "./dialog-box";
 
 type DialogBoxProps = {
   children: React.ReactNode;
 };
 
 const CreateEventDialog: React.FC<DialogBoxProps> = ({ children }) => {
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const [status, setStatus] = useState({
+    loading: false,
+    error: null,
+  });
+  const [open, setOpen] = useState(false);
+
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const title = formData.get("title") as string;
     const description = formData.get("description") as string;
     const date = formData.get("date") as string;
+    const userId = "tobereplaced";
 
-    console.log({ title, description, date });
+    if (!title || !description || !date) {
+      return;
+    }
+
+    try {
+      setStatus({ loading: true, error: null });
+      const response = await createEvent({ title, description, date, userId });
+      if (response.status === 201) {
+        setStatus({ loading: false, error: null });
+        setOpen(false);
+      }
+    } catch (error: any) {
+      setStatus({ loading: false, error: error?.message });
+    }
   };
   return (
     <DialogBox
       title="Create Event"
       description="Add a new event to calender."
       button={children}
+      open={open}
+      onOpenChange={setOpen}
     >
       <form onSubmit={handleFormSubmit}>
         <div className="grid gap-4 py-4">
