@@ -24,7 +24,9 @@ const CreateEventDialog: React.FC<DialogBoxProps> = ({ children }) => {
     const formData = new FormData(e.target as HTMLFormElement);
     const title = formData.get("title") as string;
     const description = formData.get("description") as string;
-    const date = formData.get("date") as string;
+    const date = new Date(
+      formData.get("date") as string
+    ).toDateString() as string;
     const userId = "tobereplaced";
 
     if (!title || !description || !date) {
