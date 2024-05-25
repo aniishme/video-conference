@@ -48,10 +48,15 @@ const Calendar: React.FC<CalendarProps> = ({ events }) => {
           : "bg-[#4ECDC4]"
         : "bg-[#131B23]";
 
+      const todayClass =
+        currentDate.toDateString() === today.toDateString()
+          ? "bg-[#F7F7FF] text-black"
+          : "";
+
       calendarDays.push(
         <div
           key={day}
-          className={`w-1/7 h-24 font-bold flex items-center justify-center  cursor-pointer ${eventClass}`}
+          className={`w-1/7 h-24 font-bold flex items-center justify-center  cursor-pointer ${eventClass} ${todayClass}`}
         >
           {day}
         </div>
