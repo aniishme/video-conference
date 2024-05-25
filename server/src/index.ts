@@ -2,6 +2,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 //Routes
 import userRouter from "./routes/user.route";
 
@@ -12,6 +13,7 @@ import eventRouter from "./routes/event.route";
 const app = express();
 const port = 3000;
 
+app.use(cors());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
