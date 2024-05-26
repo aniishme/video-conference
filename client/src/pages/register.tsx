@@ -12,25 +12,50 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { createUser } from "@/utils/user";
 
 function Register() {
-  const [loginData, setLoginData] = useState({
+  const [registerData, setRegisterData] = useState({
     name: "",
     email: "",
     password: "",
   });
+  const [status, setStatus] = useState({
+    loading: false,
+    error: null,
+  });
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    setLoginData((prev) => ({
+    setRegisterData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
   };
 
-  const handleRegisterClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleRegisterClick = async (
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
     e.preventDefault();
-    console.log(loginData);
+
+    try {
+      setStatus({ loading: true, error: null });
+      if (!registerData.name || !registerData.email || !registerData.password)
+        throw new Error("Please fill all the fields");
+
+      const response = await createUser(registerData);
+      if (response?.status === 201) {
+        alert("User created successfully");
+        setStatus({ loading: false, error: null });
+        setRegisterData({ name: "", email: "", password: "" });
+      }
+    } catch (error: any) {
+      console.log(error);
+      setStatus({
+        loading: false,
+        error: error?.response.data.message || error.message,
+      });
+    }
   };
 
   return (
@@ -49,7 +74,7 @@ function Register() {
                   id="name"
                   name="name"
                   placeholder="John Doe"
-                  value={loginData.name}
+                  value={registerData.name}
                   onChange={handleFormChange}
                 />
               </div>
@@ -59,7 +84,7 @@ function Register() {
                   id="email"
                   name="email"
                   placeholder="john@doe.com"
-                  value={loginData.email}
+                  value={registerData.email}
                   onChange={handleFormChange}
                 />
               </div>
@@ -69,12 +94,15 @@ function Register() {
                   id="password"
                   name="password"
                   placeholder="**********"
-                  value={loginData.password}
+                  value={registerData.password}
                   onChange={handleFormChange}
                 />
               </div>
             </div>
           </form>
+          {status.error && (
+            <div className="text-red-500 text-sm mt-2">{status.error}</div>
+          )}
         </CardContent>
         <CardFooter className="flex justify-between">
           <Button className="bg-[#2274A5]" onClick={handleRegisterClick}>
