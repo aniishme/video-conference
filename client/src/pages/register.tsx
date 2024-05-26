@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -13,8 +13,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createUser } from "@/utils/user";
+import { useToast } from "@/components/ui/use-toast";
 
 function Register() {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
   const [registerData, setRegisterData] = useState({
     name: "",
     email: "",
@@ -37,7 +41,6 @@ function Register() {
     e: React.MouseEvent<HTMLButtonElement>
   ) => {
     e.preventDefault();
-
     try {
       setStatus({ loading: true, error: null });
       if (!registerData.name || !registerData.email || !registerData.password)
@@ -45,15 +48,24 @@ function Register() {
 
       const response = await createUser(registerData);
       if (response?.status === 201) {
-        alert("User created successfully");
         setStatus({ loading: false, error: null });
         setRegisterData({ name: "", email: "", password: "" });
+
+        toast({
+          title: "Account Created Successfully!",
+          description: "You can now login to the app.",
+        });
+        return navigate("/login");
       }
     } catch (error: any) {
-      console.log(error);
       setStatus({
         loading: false,
         error: error?.response.data.message || error.message,
+      });
+
+      toast({
+        variant: "destructive",
+        title: error?.response.data.message || error.message,
       });
     }
   };
@@ -93,6 +105,7 @@ function Register() {
                 <Input
                   id="password"
                   name="password"
+                  type="password"
                   placeholder="**********"
                   value={registerData.password}
                   onChange={handleFormChange}
@@ -100,9 +113,6 @@ function Register() {
               </div>
             </div>
           </form>
-          {status.error && (
-            <div className="text-red-500 text-sm mt-2">{status.error}</div>
-          )}
         </CardContent>
         <CardFooter className="flex justify-between">
           <Button className="bg-[#2274A5]" onClick={handleRegisterClick}>
