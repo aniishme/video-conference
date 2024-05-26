@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -12,11 +12,20 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { loginUser } from "@/utils/user";
+import { useToast } from "@/components/ui/use-toast";
 
 function Login() {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
+  });
+  const [status, setStatus] = useState({
+    loading: false,
+    error: null,
   });
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,9 +36,31 @@ function Login() {
     }));
   };
 
-  const handleLoginClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleLoginClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    console.log(loginData);
+    try {
+      setStatus({ loading: true, error: null });
+      if (!loginData.email || !loginData.password)
+        throw new Error("Please fill all the fields");
+
+      const response = await loginUser(loginData.email, loginData.password);
+      if (response?.status === 200) {
+        setStatus({ loading: false, error: null });
+        setLoginData({ email: "", password: "" });
+
+        return navigate("/dashboard");
+      }
+    } catch (error: any) {
+      setStatus({
+        loading: false,
+        error: error?.response.data.message || error.message,
+      });
+
+      toast({
+        variant: "destructive",
+        title: error?.response.data.message || error.message,
+      });
+    }
   };
 
   return (
@@ -57,6 +88,7 @@ function Login() {
                 <Input
                   id="password"
                   name="password"
+                  type="password"
                   placeholder="**********"
                   value={loginData.password}
                   onChange={handleFormChange}
