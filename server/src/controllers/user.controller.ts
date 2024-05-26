@@ -53,9 +53,9 @@ export class UserController {
         path: "/",
         maxAge: ONE_WEEK_IN_MS,
         sameSite: "none",
-        // secure: true,
+        secure: true,
       });
-      return res.status(200).json({ accessToken: token });
+      return res.status(200).json({ message: "Login Successful" });
     } catch (error) {
       next(error);
     }
