@@ -15,7 +15,6 @@ const Dashboard = () => {
   useEffect(() => {
     fetchEvents();
   }, []);
-  console.log(events);
 
   return (
     <div className="w-4/5 px-2 py-4 min-h-screen h-content flex flex-row  gap-32 items-start justify-between">

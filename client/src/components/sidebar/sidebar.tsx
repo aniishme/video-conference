@@ -1,8 +1,14 @@
 import { Button } from "@/components/ui/button";
 import CreateEventDialog from "../dialog/create-event";
 import JoinEventDialog from "../dialog/join-event";
+import useAuthStore from "@/store/authStore";
 
 const Sidebar = () => {
+  const logout = useAuthStore((state) => state.logout);
+
+  const handleLogout = () => {
+    logout();
+  };
   return (
     <div className="bg-gray-800 w-64 flex-none rounded-lg">
       <div className="p-4 text-white">
@@ -29,7 +35,7 @@ const Sidebar = () => {
             </Button>
           </li>
 
-          <button className="w-full text-left mt-8">
+          <button className="w-full text-left mt-8" onClick={handleLogout}>
             <li className="p-2 hover:bg-gray-700 cursor-pointer text-red-400 text-center">
               Logout
             </li>
