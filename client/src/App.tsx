@@ -5,6 +5,8 @@ import Login from "./pages/login";
 import Register from "./pages/register";
 import Dashboard from "./pages/dashboard";
 import ProtectedRoute from "./components/protected/protected";
+import useAuthStore from "./store/authStore";
+import { useEffect } from "react";
 
 // https://coolors.co/2274a5-e7dfc6-e9f1f7-131b23
 const router = createBrowserRouter([
@@ -34,5 +36,12 @@ const router = createBrowserRouter([
 ]);
 
 export default function App() {
+  const fetchProfile = useAuthStore((state) => state.fetchProfile);
+  const token = useAuthStore((state) => state.token);
+
+  useEffect(() => {
+    fetchProfile();
+  }, [fetchProfile, token]);
+
   return <RouterProvider router={router} />;
 }

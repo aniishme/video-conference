@@ -20,7 +20,7 @@ function Login() {
     password: "",
   });
   const login = useAuthStore((state) => state.login);
-  const isAuth = useAuthStore((state) => state.token !== null);
+  const isAuth = useAuthStore((state) => state.isAuth);
   if (isAuth) {
     return <Navigate to="/dashboard" />;
   }

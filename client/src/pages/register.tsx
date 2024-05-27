@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createUser } from "@/utils/user";
 import { useToast } from "@/components/ui/use-toast";
+import useAuthStore from "@/store/authStore";
 
 function Register() {
   const navigate = useNavigate();
@@ -29,8 +30,8 @@ function Register() {
     error: null,
   });
 
-  const isAuthenticated = localStorage.getItem("token");
-  if (isAuthenticated) {
+  const isAuth = useAuthStore((state) => state.isAuth);
+  if (isAuth) {
     return <Navigate to="/dashboard" />;
   }
 

@@ -7,6 +7,7 @@ interface AuthState {
   user: GetUserType | null;
   loading: boolean;
   error: string | null;
+  isAuth: boolean;
   login: (username: string, password: string) => Promise<void>;
   fetchProfile: () => Promise<void>;
   logout: () => void;
@@ -17,6 +18,7 @@ const useAuthStore = create<AuthState>((set) => ({
   user: null,
   loading: false,
   error: null,
+  isAuth: false,
 
   login: async (email: string, password: string) => {
     set({ loading: true, error: null });
@@ -46,12 +48,15 @@ const useAuthStore = create<AuthState>((set) => ({
       if (!accessToken) throw new Error("No access token available");
 
       const response = await getProfile();
-      set({ user: response, loading: false });
+      set({ user: response, loading: false, isAuth: true });
     } catch (error: any) {
       set({ error: error.message, loading: false });
     }
   },
-  logout: () => {},
+  logout: () => {
+    localStorage.removeItem("token");
+    set({ token: null, user: null, isAuth: false });
+  },
 }));
 
 export default useAuthStore;
