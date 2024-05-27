@@ -80,4 +80,23 @@ export class UserController {
       next(error);
     }
   }
+
+  async isAuthenticated(req: Request, res: Response, next: NextFunction) {
+    const token = req.cookies.ACCESS_TOKEN || req.headers.authorization;
+
+    if (!token) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    try {
+      const payload = verifyToken(token!);
+      const user = await this.userService.getById(payload?.id);
+      if (user.length === 0) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      return res.status(200).json({ isAuthenticated: true });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
