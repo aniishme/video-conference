@@ -30,6 +30,11 @@ export const loginUser = async (email: string, password: string) => {
 };
 
 export const getProfile = async (): Promise<GetUserType> => {
-  const response = await api.get("/user/profile");
+  const token = localStorage.getItem("token");
+  const response = await api.get("/user/profile", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return await response.data;
 };
