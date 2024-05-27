@@ -1,3 +1,4 @@
+import { Request } from "express";
 import { JwtPayload } from "jsonwebtoken";
 
 export type GetUserType = {
@@ -38,3 +39,7 @@ export type BasePayloadType = {
 };
 
 export type JwtPayloadType = BasePayloadType & JwtPayload;
+
+export interface AuthRequestType extends Request {
+  userId: string;
+}

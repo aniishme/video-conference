@@ -10,6 +10,7 @@ Utility Functions
 */
 import { comparePassword, hashPassword } from "../utils/password";
 import { generateToken, verifyToken } from "../utils/jwt";
+import { AuthRequestType } from "../types";
 
 export class UserController {
   private userService: UserService;
@@ -62,39 +63,18 @@ export class UserController {
   }
 
   async getProfile(req: Request, res: Response, next: NextFunction) {
-    const token = req.cookies.ACCESS_TOKEN || req.headers.authorization;
-    console.log("TOKENHERE", token);
-    try {
-      const payload = verifyToken(token!);
-      const user = await this.userService.getById(payload?.id);
-      if (user.length === 0) {
-        return res.status(404).json({ message: "User not found" });
-      }
-      const response = {
-        id: user[0].id,
-        name: user[0].name,
-        email: user[0].email,
-      };
-      return res.status(200).json(response);
-    } catch (error) {
-      next(error);
-    }
-  }
+    const { userId } = req as AuthRequestType;
 
-  async isAuthenticated(req: Request, res: Response, next: NextFunction) {
-    const token = req.cookies.ACCESS_TOKEN || req.headers.authorization;
-
-    if (!token) {
+    if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
     try {
-      const payload = verifyToken(token!);
-      const user = await this.userService.getById(payload?.id);
-      if (user.length === 0) {
+      const user = await this.userService.getById(userId);
+      if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
-      return res.status(200).json({ isAuthenticated: true });
+      return res.status(200).json(user);
     } catch (error) {
       next(error);
     }
