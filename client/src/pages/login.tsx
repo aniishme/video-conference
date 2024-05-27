@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -27,6 +27,10 @@ function Login() {
     loading: false,
     error: null,
   });
+  const isAuthenticated = localStorage.getItem("token");
+  if (isAuthenticated) {
+    return <Navigate to="/dashboard" />;
+  }
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -47,7 +51,7 @@ function Login() {
       if (response?.status === 200) {
         setStatus({ loading: false, error: null });
         setLoginData({ email: "", password: "" });
-
+        localStorage.setItem("token", response.data.token);
         return navigate("/dashboard");
       }
     } catch (error: any) {

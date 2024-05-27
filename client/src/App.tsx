@@ -4,6 +4,7 @@ import Layout from "./components/layout/layout";
 import Login from "./pages/login";
 import Register from "./pages/register";
 import Dashboard from "./pages/dashboard";
+import ProtectedRoute from "./components/protected/protected";
 
 // https://coolors.co/2274a5-e7dfc6-e9f1f7-131b23
 const router = createBrowserRouter([
@@ -14,7 +15,11 @@ const router = createBrowserRouter([
       { path: "conference", element: <Conference /> },
       {
         path: "dashboard",
-        element: <Dashboard />,
+        element: (
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "login",
