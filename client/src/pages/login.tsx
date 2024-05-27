@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -12,23 +12,16 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { loginUser } from "@/utils/user";
-import { useToast } from "@/components/ui/use-toast";
+import useAuthStore from "@/store/authStore";
 
 function Login() {
-  const navigate = useNavigate();
-  const { toast } = useToast();
-
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
   });
-  const [status, setStatus] = useState({
-    loading: false,
-    error: null,
-  });
-  const isAuthenticated = localStorage.getItem("token");
-  if (isAuthenticated) {
+  const login = useAuthStore((state) => state.login);
+  const isAuth = useAuthStore((state) => state.token !== null);
+  if (isAuth) {
     return <Navigate to="/dashboard" />;
   }
 
@@ -42,29 +35,7 @@ function Login() {
 
   const handleLoginClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    try {
-      setStatus({ loading: true, error: null });
-      if (!loginData.email || !loginData.password)
-        throw new Error("Please fill all the fields");
-
-      const response = await loginUser(loginData.email, loginData.password);
-      if (response?.status === 200) {
-        setStatus({ loading: false, error: null });
-        setLoginData({ email: "", password: "" });
-        localStorage.setItem("token", response.data.token);
-        return navigate("/dashboard");
-      }
-    } catch (error: any) {
-      setStatus({
-        loading: false,
-        error: error?.response.data.message || error.message,
-      });
-
-      toast({
-        variant: "destructive",
-        title: error?.response.data.message || error.message,
-      });
-    }
+    await login(loginData.email, loginData.password);
   };
 
   return (
