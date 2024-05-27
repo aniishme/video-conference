@@ -55,14 +55,14 @@ export class UserController {
         sameSite: "none",
         secure: true,
       });
-      return res.status(200).json({ message: "Login Successful" });
+      return res.status(200).json({ token: token });
     } catch (error) {
       next(error);
     }
   }
 
   async getProfile(req: Request, res: Response, next: NextFunction) {
-    const token = req.cookies.ACCESS_TOKEN;
+    const token = req.cookies.ACCESS_TOKEN || req.headers.authorization;
     console.log("TOKENHERE", token);
     try {
       const payload = verifyToken(token!);
