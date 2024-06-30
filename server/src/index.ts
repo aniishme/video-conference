@@ -5,10 +5,12 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 //Routes
 import userRouter from "./routes/user.route";
+import eventRouter from "./routes/event.route";
+import streamRouter from "./routes/stream.route";
 
 //Middlewares
 import errorHandler from "./middleware/error.middleware";
-import eventRouter from "./routes/event.route";
+
 
 const app = express();
 const port = 3000;
@@ -29,6 +31,7 @@ app.get("/", (req, res) => {
 
 app.use("/user", userRouter);
 app.use("/event", eventRouter);
+app.use("/stream",streamRouter)
 
 // Register the error handler middleware
 app.use(errorHandler);
