@@ -1,14 +1,16 @@
 import Calendar from "@/components/calendar/calendar";
 import Sidebar from "@/components/sidebar/sidebar";
+import useAuthStore from "@/store/authStore";
 import { GetEventType } from "@/types";
 import { getEvents } from "@/utils/event";
 import { useEffect, useState } from "react";
 
 const Dashboard = () => {
   const [events, setEvents] = useState<GetEventType[]>([]);
+  const user = useAuthStore((state) => state.user)
 
   const fetchEvents = async () => {
-    const data = await getEvents("tobereplaced");
+    const data = await getEvents(user?.id as string);
     setEvents(data);
   };
 

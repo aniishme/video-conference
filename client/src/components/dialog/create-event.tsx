@@ -7,6 +7,7 @@ import { Button } from "../ui/button";
 import { createEvent } from "@/utils/event";
 
 import DialogBox from "./dialog-box";
+import useAuthStore from "@/store/authStore";
 
 type DialogBoxProps = {
   children: React.ReactNode;
@@ -18,6 +19,7 @@ const CreateEventDialog: React.FC<DialogBoxProps> = ({ children }) => {
     error: null,
   });
   const [open, setOpen] = useState(false);
+  const user = useAuthStore((state) => state.user)
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,7 +29,7 @@ const CreateEventDialog: React.FC<DialogBoxProps> = ({ children }) => {
     const date = new Date(
       formData.get("date") as string
     ).toDateString() as string;
-    const userId = "tobereplaced";
+    const userId = user?.id as string;
 
     if (!title || !description || !date) {
       return;
