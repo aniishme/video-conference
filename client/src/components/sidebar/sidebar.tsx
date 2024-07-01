@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import CreateEventDialog from "../dialog/create-event";
 import JoinEventDialog from "../dialog/join-event";
 import useAuthStore from "@/store/authStore";
+import InstantMeetDialog from "../dialog/instant-meet";
 
 const Sidebar = () => {
   const logout = useAuthStore((state) => state.logout);
@@ -30,9 +31,11 @@ const Sidebar = () => {
           </li>
 
           <li className="p-2 hover:bg-gray-700 cursor-pointer">
+            <InstantMeetDialog>
             <Button variant="outline" className="bg-black w-full">
               Instant Meet
             </Button>
+            </InstantMeetDialog>
           </li>
 
           <button className="w-full text-left mt-8" onClick={handleLogout}>
