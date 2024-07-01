@@ -79,6 +79,7 @@ const CreateEventDialog: React.FC<DialogBoxProps> = ({ children }) => {
         <DialogFooter>
           <Button type="submit">Save</Button>
         </DialogFooter>
+        {status.error && <p>{status.error}</p>}
       </form>
     </DialogBox>
   );

@@ -35,7 +35,7 @@ const InstantMeetDialog: React.FC<DialogBoxProps> = ({ children }) => {
     if(!client || !user) return;
 
     try {
-        const id = crypto.randomUUID();
+        const id = Date.now().toString()
         const call = client.call('default', id)
         console.log(id)
 
