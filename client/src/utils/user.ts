@@ -22,9 +22,6 @@ export const loginUser = async (email: string, password: string) => {
   const response = await api.post(
     "/user/login",
     { email, password },
-    {
-      withCredentials: true,
-    }
   );
   return response;
 };
